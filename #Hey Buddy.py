@@ -4,16 +4,18 @@
 import discord
 import threading
 import io
+import os
 from flask import Flask, request,jsonify
 
 app = Flask(__name__)
-
+TokenEnv = os.getenv("DISCORD_TOKEN")
+ChannelEnv = os.getenv("DISCORD_CHANNEL_ID")
 intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
 
-Token= "MTI3MzA3NjQ3NzUwMzQ3MTY4Nw.GYm6SE.txI7XEoYbZkm2y9e-bylEUyc3qS2T__8hBPsZs" #Do not commit this line 
-CHANNEL_ID= 1163708902165204993
+Token= TokenEnv #Do not commit this line 
+CHANNEL_ID= ChannelENv
 
 @app.route('/succeed', methods=['POST'])
 def succeed():
