@@ -15,7 +15,7 @@ intents.messages=True
 client = discord.Client(intents=intents)
 
 Token= TokenEnv #Do not commit this line 
-CHANNEL_ID= ChannelENv
+CHANNEL_ID= ChannelEnv
 
 @app.route('/succeed', methods=['POST'])
 def succeed():
