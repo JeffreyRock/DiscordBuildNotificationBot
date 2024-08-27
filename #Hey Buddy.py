@@ -13,8 +13,6 @@ ChannelEnv = os.getenv("DISCORD_CHANNEL_ID")
 intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
-print(TokenEnv)
-print(ChannelEnv)
 Token= TokenEnv #Do not commit this line 
 CHANNEL_ID= ChannelEnv
 
@@ -29,7 +27,7 @@ def succeed():
         client.loop.create_task(channel.send(content="build Succeeded", file=attachments_file))
         return jsonify({'status':"success workings "}),200
     else:
-        return jsonify({'status':"success Faile "}),404
+        return jsonify({'status':"success Failed"}),404
 
 @app.route('/fail', methods=['POST'])
 def fail():
@@ -42,10 +40,12 @@ def fail():
         client.loop.create_task(channel.send(content="Build Failed", file=attachments_file))
         return jsonify({'status':"success workings "}),200
     else:
-        return jsonify({'status':"success Faile "}),404
+        return jsonify({'status':"success Failed"}),404
 
 @client.event
 async def on_ready(): 
+    print(TokenEnv)
+    print(ChannelEnv)
     print(f'logged in as {client.user.name}')
 
 def run_flask():
