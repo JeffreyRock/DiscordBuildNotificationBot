@@ -52,6 +52,10 @@ def run_flask():
     app.run(host='0.0.0.0', port=5000)
 
 if __name__=='__main__':
-    Flask_thread=threading.Thread(target=run_flask)
-    Flask_thread.start()
-    client.run(token=Token)
+    try:
+        Flask_thread=threading.Thread(target=run_flask)
+        Flask_thread.start()
+        print("Starting bot")
+        client.run(token=Token)
+    except Exception as e:
+        print(f'An error has occured: {e}')
