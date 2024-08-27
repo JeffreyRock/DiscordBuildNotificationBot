@@ -13,7 +13,8 @@ ChannelEnv = os.getenv("DISCORD_CHANNEL_ID")
 intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
-
+print(TokenEnv)
+print(ChannelEnv)
 Token= TokenEnv #Do not commit this line 
 CHANNEL_ID= ChannelEnv
 
