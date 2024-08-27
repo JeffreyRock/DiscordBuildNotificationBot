@@ -53,6 +53,7 @@ def run_flask():
 
 if __name__=='__main__':
     try:
+        print("Starting Flask")
         Flask_thread=threading.Thread(target=run_flask)
         Flask_thread.start()
         print("Starting bot")
