@@ -1,5 +1,5 @@
 # Use the official Python image
-FROM python:3.10.14
+FROM python:3.10.14-slim-bullseye
 
 # Set the working directory
 WORKDIR /app
@@ -10,6 +10,7 @@ RUN pip3 install --no-cache-dir flask discord.py
 
 # Copy the application code
 COPY . .
+
 
 # Set an environment variable
 ENV DISCORD_TOKEN="your_discord_token_here"
