@@ -5,7 +5,7 @@ FROM python:3.9
 WORKDIR /app
 
 # Install dependencies directly
-RUN pip install --no-cache-dir flask discord.py
+RUN pip3 install --no-cache-dir flask discord.py
 
 # Copy the application code
 COPY . .
@@ -18,4 +18,4 @@ ENV DISCORD_CHANNEL_ID="your_channel_id_here"
 EXPOSE 5000
 
 # Command to run the application
-CMD ["python", "#Hey Buddy.py"]
+CMD ["python3", "#Hey Buddy.py"]
