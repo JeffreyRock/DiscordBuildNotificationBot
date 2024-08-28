@@ -47,16 +47,16 @@ async def on_ready():
     print(TokenEnv)
     print(ChannelEnv)
     print(f'logged in as {client.user.name}')
+    print("Starting Flask")
+    Flask_thread=threading.Thread(target=run_flask)
+    Flask_thread.start()
+    print("Starting bot")
 
 def run_flask():
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 if __name__=='__main__':
     try:
-        print("Starting Flask")
-        Flask_thread=threading.Thread(target=run_flask)
-        Flask_thread.start()
-        print("Starting bot")
         client.run(token=Token)
     except Exception as e:
         print(f'An error has occured: {e}')
