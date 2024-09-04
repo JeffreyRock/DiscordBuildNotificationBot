@@ -35,11 +35,20 @@ async def test():
 
     return jsonify({"Status": "Check logs"}), 200
 
+@app.route('/testChannelSearch', methods=['POST'])
+async def testChannelSearch():
+    print("Channel Check")
+    channel = client.get_channel(discord_channel_id)
+    if channel:
+        print(f"{channel}")
+    else:
+        print("channel can't be found")
+
 @app.route('/succeed', methods=['POST'])
 async def succeed():
     """Sends a success message to the Discord channel with an optional attachment."""
     attachments = request.files.get('attachment')
-    channel = client.get_channel(discord_channel_id)
+    channel = client.get_channel((int)discord_channel_id)
 
     if not channel:
         for channelOption in client.get_all_channels():
