@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # Load environment variables securely (consider using a library like `python-dotenv`)
 discord_token = os.getenv("DISCORD_TOKEN")
-discord_channel_id = os.getenv("DISCORD_CHANNEL_ID")
+discord_channel_id = 944715418390626386
 # Intents for improved functionality (consider adding more as needed)
 intents = discord.Intents.default()
 intents.messages = True
@@ -45,6 +45,7 @@ async def succeed():
         for channelOption in client.get_all_channels():
             if(channelOption.id == 944715418390626386):
                 channel = channelOption
+                print("channel found")
                 break
         return jsonify({'status': "Invalid channel ID"}), 400
         
