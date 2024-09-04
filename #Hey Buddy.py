@@ -14,7 +14,7 @@ intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
 Token= TokenEnv #Do not commit this line 
-CHANNEL_ID= ChannelEnv
+CHANNEL_ID= 
 
 @app.route('/succeed', methods=['POST'])
 async def succeed():
@@ -23,7 +23,7 @@ async def succeed():
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
     print(CHANNEL_ID)
-    channel = client.get_channel(CHANNEL_ID)
+    channel = client.get_channel("944715470047703090")
     print(channel.type)
     if channel:
         await channel.send(content="build Succeeded", file=attachments_file)
