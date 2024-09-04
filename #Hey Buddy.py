@@ -23,6 +23,7 @@ async def test():
     for channel in channels:
         if channel is not None:
             print(f"Channel Type: {channel.type}")
+            print(f"channel name : {channel.name}")
         else:
             print("Channel not found.")
     return jsonify ({"Status":"check logs"}),200
@@ -30,7 +31,7 @@ async def test():
 @app.route('/succeed', methods=['POST'])
 async def succeed():
     attachments = request.files['attachment']
-    channel = client.get_channel(ChannelEnv)
+    channel = client.get_channel(CHANNEL_ID)
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
@@ -46,7 +47,7 @@ async def succeed():
 @app.route('/fail', methods=['POST'])
 async def fail():
     attachments = request.files['attachment']
-    channel = client.get_channel(ChannelEnv)
+    channel = client.get_channel(CHANNEL_ID)
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
