@@ -42,8 +42,12 @@ async def succeed():
     channel = client.get_channel(discord_channel_id)
 
     if not channel:
+        for channelOption in client.get_all_channels():
+            if(channelOption.id == 944715418390626386):
+                channel = channelOption
+                break
         return jsonify({'status': "Invalid channel ID"}), 400
-
+        
     if attachments:
         attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
         await channel.send(content="Build Succeeded", file=attachments_file)
