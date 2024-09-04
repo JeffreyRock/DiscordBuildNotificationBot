@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install dependencies directly
 RUN apt-get update
-RUN pip3 install --no-cache-dir flask discord.py
+RUN pip3 install --no-cache-dir flask[async] discord.py
 
 # Copy the application code
 COPY . .
