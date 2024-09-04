@@ -22,7 +22,9 @@ async def succeed():
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
+    print(CHANNEL_ID)
     channel = client.get_channel(CHANNEL_ID)
+    print(channel.type)
     if channel:
         await channel.send(content="build Succeeded", file=attachments_file)
         return jsonify({'status':"success workings "}),200
