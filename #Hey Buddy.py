@@ -39,7 +39,7 @@ def fail():
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
     channel = client.get_channel(CHANNEL_ID)
     if channel:
-        client.loop.create_task(channel.send(content="Build Failed", file=attachments_file))
+        channel.send(content="Build Failed", file=attachments_file)
         return jsonify({'status':"success workings "}),200
     else:
         print("Channel ID invalid")
