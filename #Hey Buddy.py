@@ -14,12 +14,12 @@ intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
 Token= TokenEnv #Do not commit this line 
-CHANNEL_ID="944715470047703090"
+CHANNEL_ID="944715418390626386"
 
 @app.route('/test', methods=['POST'])
 async def test():
     print(f"Channel ID: {CHANNEL_ID}")
-    channel = client.get_channel(CHANNEL_ID)
+    channel = client.get_all_channels(CHANNEL_ID)
     if channel is not None:
         print(f"Channel Type: {channel.type}")
     else:
@@ -29,7 +29,7 @@ async def test():
 @app.route('/succeed', methods=['POST'])
 async def succeed():
     attachments = request.files['attachment']
-    channel = client.get_channel("944715470047703090")
+    channel = client.get_channel(ChannelEnv)
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
@@ -45,7 +45,7 @@ async def succeed():
 @app.route('/fail', methods=['POST'])
 async def fail():
     attachments = request.files['attachment']
-    channel = client.get_channel("944715470047703090")
+    channel = client.get_channel(ChannelEnv)
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
