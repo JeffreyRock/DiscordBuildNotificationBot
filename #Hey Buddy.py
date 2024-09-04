@@ -19,11 +19,12 @@ CHANNEL_ID="944715418390626386"
 @app.route('/test', methods=['POST'])
 async def test():
     print(f"Channel ID: {CHANNEL_ID}")
-    channel = client.get_all_channels()
-    if channel is not None:
-        print(f"Channel Type: {channel.type}")
-    else:
-        print("Channel not found.")
+    channels = client.get_all_channels()
+    for channel in channels:
+        if channel is not None:
+            print(f"Channel Type: {channel.type}")
+        else:
+            print("Channel not found.")
     return jsonify ({"Status":"check logs"}),200
 
 @app.route('/succeed', methods=['POST'])
