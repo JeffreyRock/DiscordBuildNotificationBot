@@ -15,6 +15,7 @@ COPY . .
 # Set an environment variable
 ENV DISCORD_TOKEN="your_discord_token_here"
 ENV DISCORD_CHANNEL_ID="your_channel_id_here"
+ENV PYTHONUNBUFFERED=1
 
 # Expose the port Flask will run on
 EXPOSE 5000
