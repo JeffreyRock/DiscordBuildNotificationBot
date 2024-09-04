@@ -15,11 +15,11 @@ intents.messages=True
 client = discord.Client(intents=intents)
 Token= TokenEnv #Do not commit this line 
 CHANNEL_ID="944715470047703090"
-channel = None
 
 @app.route('/succeed', methods=['POST'])
 async def succeed():
     attachments = request.files['attachment']
+    channel = client.get_channel("944715470047703090")
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
@@ -35,6 +35,7 @@ async def succeed():
 @app.route('/fail', methods=['POST'])
 async def fail():
     attachments = request.files['attachment']
+    channel = client.get_channel("944715470047703090")
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
@@ -51,8 +52,6 @@ async def on_ready():
     print(TokenEnv)
     print(ChannelEnv)
     print(f'logged in as {client.user.name}')
-    channel = client.get_channel("944715470047703090")
-    print(channel.name)
     print("bot Started")
     print("Starting Flask")
     Flask_thread=threading.Thread(target=run_flask)
