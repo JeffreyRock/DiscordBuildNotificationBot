@@ -29,6 +29,7 @@ async def test():
         if channel is not None:
             print(f"Channel Type: {channel.type}")
             print(f"Channel Name: {channel.name}")
+            print(f"Channel ID: {channel.id}")
         else:
             print("Channel not found.")
 
