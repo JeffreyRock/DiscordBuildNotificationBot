@@ -51,9 +51,9 @@ async def succeed():
         
     if attachments:
         attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-        await channel.send(content="Build Succeeded", file=attachments_file)
+        async with channel.send(content="Build Succeeded", file=attachments_file)
     else:
-        await channel.send(content="Build Succeeded")
+        async with channel.send(content="Build Succeeded")
 
     return jsonify({'status': "Success"}), 200
 
@@ -68,9 +68,9 @@ async def fail():
 
     if attachments:
         attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-        await channel.send(content="Build Failed", file=attachments_file)
+        async with channel.send(content="Build Failed", file=attachments_file)
     else:
-        await channel.send(content="Build Failed")
+        async with channel.send(content="Build Failed")
 
     return jsonify({'status': "Success"}), 200
 
