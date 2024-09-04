@@ -5,76 +5,85 @@ import discord
 import threading
 import io
 import os
-from flask import Flask, request,jsonify
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-TokenEnv = os.getenv("DISCORD_TOKEN")
-ChannelEnv = os.getenv("DISCORD_CHANNEL_ID")
-intents =discord.Intents.default()
-intents.messages=True
+
+# Load environment variables securely (consider using a library like `python-dotenv`)
+discord_token = os.getenv("DISCORD_TOKEN")
+discord_channel_id = os.getenv("DISCORD_CHANNEL_ID")
+# Intents for improved functionality (consider adding more as needed)
+intents = discord.Intents.default()
+intents.messages = True
+intents.members = True  # For checking channel types (optional)
+
 client = discord.Client(intents=intents)
-Token= TokenEnv #Do not commit this line 
-CHANNEL_ID=944715418390626386
 
 @app.route('/test', methods=['POST'])
 async def test():
-    print(f"Channel ID: {CHANNEL_ID}")
+    """Tests the bot's functionality and logs channel information."""
+    print(f"Channel ID: {discord_channel_id}")
+
     channels = client.get_all_channels()
     for channel in channels:
         if channel is not None:
             print(f"Channel Type: {channel.type}")
-            print(f"channel name : {channel.name}")
+            print(f"Channel Name: {channel.name}")
         else:
             print("Channel not found.")
-    return jsonify ({"Status":"check logs"}),200
+
+    return jsonify({"Status": "Check logs"}), 200
 
 @app.route('/succeed', methods=['POST'])
 async def succeed():
-    attachments = request.files['attachment']
-    channel = client.get_channel(CHANNEL_ID)
-    if  not attachments:
-        return jsonify({'status':" Errors "}),400
-    attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-    print(channel.type)
-    if channel:
-        await channel.send(content="build Succeeded", file=attachments_file)
-        return jsonify({'status':"success workings "}),200
+    """Sends a success message to the Discord channel with an optional attachment."""
+    attachments = request.files.get('attachment')
+    channel = client.get_channel(discord_channel_id)
+
+    if not channel:
+        return jsonify({'status': "Invalid channel ID"}), 400
+
+    if attachments:
+        attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
+        await channel.send(content="Build Succeeded", file=attachments_file)
     else:
-        print("Channel ID invalid")
-        await channel.send(content="build Succeeded")
-        return jsonify({'status':"success Failed"}),200
+        await channel.send(content="Build Succeeded")
+
+    return jsonify({'status': "Success"}), 200
 
 @app.route('/fail', methods=['POST'])
 async def fail():
-    attachments = request.files['attachment']
-    channel = client.get_channel(CHANNEL_ID)
-    if  not attachments:
-        return jsonify({'status':" Errors "}),400
-    attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-    if channel:
+    """Sends a failure message to the Discord channel with an optional attachment."""
+    attachments = request.files.get('attachment')
+    channel = client.get_channel(discord_channel_id)
+
+    if not channel:
+        return jsonify({'status': "Invalid channel ID"}), 400
+
+    if attachments:
+        attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
         await channel.send(content="Build Failed", file=attachments_file)
-        return jsonify({'status':"success workings "}),200
     else:
-        print("Channel ID invalid")
-        await channel.send(content="build failed")
-        return jsonify({'status':"success Failed"}),200
+        await channel.send(content="Build Failed")
+
+    return jsonify({'status': "Success"}), 200
 
 @client.event
-async def on_ready(): 
-    print(TokenEnv)
-    print(ChannelEnv)
-    print(f'logged in as {client.user.name}')
-    print("bot Started")
+async def on_ready():
+    """Logs bot startup messages and starts the Flask server."""
+    print(f'Logged in as {client.user.name}')
+    print("Bot Started")
     print("Starting Flask")
-    Flask_thread=threading.Thread(target=run_flask)
+
+    Flask_thread = threading.Thread(target=run_flask)
     Flask_thread.start()
 
 def run_flask():
+    """Runs the Flask server in a separate thread."""
     app.run(host='0.0.0.0', port=5000)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     try:
-        client.run(token=Token)
-
+        client.run(discord_token)
     except Exception as e:
-        print(f'An error has occured: {e}')
+        print(f'An error occurred: {e}')
