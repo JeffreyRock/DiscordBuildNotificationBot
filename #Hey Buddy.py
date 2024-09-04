@@ -8,8 +8,8 @@ import os
 from flask import Flask, request,jsonify
 
 app = Flask(__name__)
-TokenEnv = "MTI3MzA3NjQ3NzUwMzQ3MTY4Nw.GaRGRy.tlrr7DskWJyX4dcblkQ97itmLUbGkvkgbFunSA"
-ChannelEnv = "1163708902165204993"
+TokenEnv = os.getenv("DISCORD_TOKEN")
+ChannelEnv = os.getenv("DISCORD_CHANNEL_ID")
 intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
@@ -27,7 +27,7 @@ def succeed():
         client.loop.create_task(channel.send(content="build Succeeded", file=attachments_file))
         return jsonify({'status':"success workings "}),200
     else:
-        return jsonify({'status':"success Failed"}),404
+        return jsonify({'status':"success Failed"}),200
 
 @app.route('/fail', methods=['POST'])
 def fail():
@@ -40,7 +40,7 @@ def fail():
         client.loop.create_task(channel.send(content="Build Failed", file=attachments_file))
         return jsonify({'status':"success workings "}),200
     else:
-        return jsonify({'status':"success Failed"}),404
+        return jsonify({'status':"success Failed"}),200
 
 @client.event
 async def on_ready(): 
