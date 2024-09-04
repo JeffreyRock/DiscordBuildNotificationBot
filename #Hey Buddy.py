@@ -14,7 +14,7 @@ intents =discord.Intents.default()
 intents.messages=True
 client = discord.Client(intents=intents)
 Token= TokenEnv #Do not commit this line 
-CHANNEL_ID="944715418390626386"
+CHANNEL_ID=944715418390626386
 
 @app.route('/test', methods=['POST'])
 async def test():
