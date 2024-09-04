@@ -64,7 +64,7 @@ async def on_ready():
     print(f'logged in as {client.user.name}')
     print("bot Started")
     print("Starting Flask")
-    Flask_thread=threading.Thread(target=run_flask)
+    Flask_thread=threading.Thread(target=run_flask, debug=True)
     Flask_thread.start()
 
 def run_flask():
