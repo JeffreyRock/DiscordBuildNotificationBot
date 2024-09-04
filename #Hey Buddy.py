@@ -17,33 +17,33 @@ Token= TokenEnv #Do not commit this line
 CHANNEL_ID= ChannelEnv
 
 @app.route('/succeed', methods=['POST'])
-def succeed():
+async def succeed():
     attachments = request.files['attachment']
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
     channel = client.get_channel(CHANNEL_ID)
     if channel:
-        channel.send(content="build Succeeded", file=attachments_file)
+        await channel.send(content="build Succeeded", file=attachments_file)
         return jsonify({'status':"success workings "}),200
     else:
         print("Channel ID invalid")
-        channel.send(content="build Succeeded")
+        await channel.send(content="build Succeeded")
         return jsonify({'status':"success Failed"}),200
 
 @app.route('/fail', methods=['POST'])
-def fail():
+async def fail():
     attachments = request.files['attachment']
     if  not attachments:
         return jsonify({'status':" Errors "}),400
     attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
     channel = client.get_channel(CHANNEL_ID)
     if channel:
-        channel.send(content="Build Failed", file=attachments_file)
+        await channel.send(content="Build Failed", file=attachments_file)
         return jsonify({'status':"success workings "}),200
     else:
         print("Channel ID invalid")
-        channel.send(content="build failed")
+        await channel.send(content="build failed")
         return jsonify({'status':"success Failed"}),200
 
 @client.event
