@@ -24,6 +24,7 @@ async def test():
         print(f"Channel Type: {channel.type}")
     else:
         print("Channel not found.")
+    return jsonify ({"Status":"check logs"}),200
 
 @app.route('/succeed', methods=['POST'])
 async def succeed():
