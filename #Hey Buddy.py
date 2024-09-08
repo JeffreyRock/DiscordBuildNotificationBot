@@ -58,7 +58,7 @@ async def fail():
     """Sends a failure message to the Discord channel with an optional attachment."""
     attachments = await request.files
     attachment = attachments.get('attachment')
-    channel = client.get_channel(discord_channel_id)
+    channel = client.get_channel(int(discord_channel_id))
 
     if not channel:
         return jsonify({'status': "Invalid channel ID"}), 400
