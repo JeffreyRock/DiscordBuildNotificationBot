@@ -5,13 +5,13 @@ import discord
 import threading
 import io
 import os
-from flask import Flask, request, jsonify
+from quart import Quart, request, jsonify
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 # Load environment variables securely (consider using a library like `python-dotenv`)
 discord_token = os.getenv("DISCORD_TOKEN")
-discord_channel_id = 944715418390626386
+discord_channel_id = os.getenv("DISCORD_CHANNEL_ID")
 # Intents for improved functionality (consider adding more as needed)
 intents = discord.Intents.default()
 intents.messages = True
@@ -35,54 +35,39 @@ async def test():
 
     return jsonify({"Status": "Check logs"}), 200
 
-@app.route('/testChannelSearch', methods=['POST'])
-async def testChannelSearch():
-    print("Channel Check")
-    channel = client.get_channel(discord_channel_id)
-    if channel:
-        print(f"{channel}")
-    else:
-        print("channel can't be found")
-
 @app.route('/succeed', methods=['POST'])
 async def succeed():
     """Sends a success message to the Discord channel with an optional attachment."""
-    attachments = request.files.get('attachment')
-    channel = client.get_channel((int)discord_channel_id)
+    attachments = await request.files
+    attachment = attachments.get('attachment')
+    channel = client.get_channel(discord_channel_id)
 
-    if not channel:
-        for channelOption in client.get_all_channels():
-            if(channelOption.id == 944715418390626386):
-                channel = channelOption
-                print("channel found")
-                break
-        return jsonify({'status': "Invalid channel ID"}), 400
-        
+    if channel is None:
+        return jsonify({'status': "Channel not found"}), 404
+
     if attachments:
-        attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-        async with channel.send(content="Build Succeeded", file=attachments_file) as message:
-            pass
+        attachments_file = discord.File(io.BytesIO(attachment.read()), filename=attachment.filename)
+        await channel.send(content="Build Succeeded", file=attachments_file)
     else:
-        async with channel.send(content="Build Succeeded") as message:
-            pass
+        await channel.send(content="Build Succeeded")
+    
     return jsonify({'status': "Success"}), 200
 
 @app.route('/fail', methods=['POST'])
 async def fail():
     """Sends a failure message to the Discord channel with an optional attachment."""
-    attachments = request.files.get('attachment')
+    attachments = await request.files
+    attachment = attachments.get('attachment')
     channel = client.get_channel(discord_channel_id)
 
     if not channel:
         return jsonify({'status': "Invalid channel ID"}), 400
 
     if attachments:
-        attachments_file = discord.File(io.BytesIO(attachments.read()), filename=attachments.filename)
-        async with channel.send(content="Build Failed", file=attachments_file) as message:
-            pass
+        attachments_file = discord.File(io.BytesIO(attachment.read()), filename=attachment.filename)
+        await channel.send(content="Build Failed", file=attachments_file)
     else:
-        async with channel.send(content="Build Failed") as message:
-            pass
+        await channel.send(content="Build Failed")
     return jsonify({'status': "Success"}), 200
 
 @client.event
@@ -91,13 +76,7 @@ async def on_ready():
     print(f'Logged in as {client.user.name}')
     print("Bot Started")
     print("Starting Flask")
-
-    Flask_thread = threading.Thread(target=run_flask)
-    Flask_thread.start()
-
-def run_flask():
-    """Runs the Flask server in a separate thread."""
-    app.run(host='0.0.0.0', port=5000)
+    await app.run_task(host='0.0.0.0', port=5000)
 
 if __name__ == '__main__':
     try:
