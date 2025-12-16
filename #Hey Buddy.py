@@ -40,7 +40,7 @@ async def succeed():
     """Sends a success message to the Discord channel with an optional attachment."""
     attachments = await request.files
     attachment = attachments.get('attachment')
-    channel = client.get_channel(int(discord_channel_id))
+    channel = client.fetch_channel(int(discord_channel_id))
 
     if channel is None:
         return jsonify({'status': "Channel not found"}), 404
@@ -58,7 +58,7 @@ async def fail():
     """Sends a failure message to the Discord channel with an optional attachment."""
     attachments = await request.files
     attachment = attachments.get('attachment')
-    channel = client.get_channel(int(discord_channel_id))
+    channel = client.fetch_channel(int(discord_channel_id))
 
     if not channel:
         return jsonify({'status': "Invalid channel ID"}), 400
